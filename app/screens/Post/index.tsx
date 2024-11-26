@@ -69,9 +69,9 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
   };
 
   const renderItem = ({ item }: { item: Post }) => (
-    <TouchableOpacity
+      <TouchableOpacity
       style={styles.postItem}
-      onPress={() => navigation.navigate('ItemPost', { postId: item.id })}
+      onPress={() => navigation.navigate('ItemPost', { post: item })} // Passando o objeto "item"
     >
       <Text style={styles.postTitle}>{item.title}</Text>
       <Text style={styles.postAuthor}>Autor: {item.author}</Text>

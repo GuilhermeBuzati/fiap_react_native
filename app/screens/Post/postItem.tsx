@@ -1,17 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function PostItem({ route }) {
-  const { postId } = route.params;
-
-  // Aqui, simulamos a busca do post pelo ID (você poderia buscar do banco ou API)
-  const post = {
-    id: '1',
-    title: 'Postagem 1',
-    author: 'Autor 1',
-    description: 'Descrição completa do post 1',
-    content: 'Conteúdo completo do post 1 aqui...',
-  };
+export default function PostItem({ route } : any) {
+  const { post } = route.params;
 
   return (
     <View style={styles.container}>
@@ -26,19 +17,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#f9f9f9',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#333333',
+    marginBottom: 15,
+    textAlign: 'center',
   },
   author: {
-    fontSize: 18,
-    color: 'gray',
-    marginBottom: 10,
+    fontSize: 16,
+    color: '#555555',
+    fontStyle: 'italic',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   content: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 18,
+    lineHeight: 28,
+    color: '#444444',
+    textAlign: 'justify',
+    paddingHorizontal: 10,
   },
 });
