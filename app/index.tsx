@@ -6,6 +6,7 @@ import PostList from './screens/Post';
 import PostItem from './screens/Post/postItem';
 import CreatePost from './screens/Post/createPost';
 import { useWindowDimensions } from 'react-native';
+import EditPost from './screens/Post/editPost';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -26,6 +27,11 @@ function PostStack() {
         name="ItemPost"
         component={PostItem}
         options={{ title: 'Detalhes da Postagem' }}
+      />
+        <Stack.Screen
+        name="EditPost"
+        component={EditPost}
+        options={{ title: 'Editar Postagem' }}
       />
     </Stack.Navigator>
   );

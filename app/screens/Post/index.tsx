@@ -3,6 +3,7 @@ import { Post } from '@/app/types/Post';
 import React, { useState } from 'react';
 import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const postsData = [
   { id: 1, title: 'Postagem 1', author: 'Autor 1', content: 'Descrição breve do post 1' },
@@ -32,14 +33,13 @@ const postsData = [
 
 
 export default function PostList({ navigation }: { navigation: NavigationProp<any> }) {
-  const [data, setData] = useState<Post[]>(postsData.slice(0, 10)); 
+  const [data, setData] = useState<Post[]>(postsData.slice(0, 10));
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPosts, setFilteredPosts] = useState(data);
   const [loading, setLoading] = useState(false);
 
   const handleSearch = (text: string) => {
     setSearchTerm(text);
-
     if (text === '') {
       setFilteredPosts(data);
     } else {
@@ -52,31 +52,41 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
   };
 
   const loadMoreData = () => {
-    if (loading || searchTerm !== '') return; // Evita carregar mais dados enquanto há busca ativa
+    if (loading || searchTerm !== '') return;
 
     setLoading(true);
-    const nextData = postsData.slice(data.length, data.length + 3); // Carrega mais 3 itens
+    const nextData = postsData.slice(data.length, data.length + 3);
     if (nextData.length === 0) {
       setLoading(false);
       return;
     }
 
     setTimeout(() => {
-      setData((prevData) => [...prevData, ...nextData]); // Adiciona mais dados ao estado "data"
-      setFilteredPosts((prevFilteredPosts) => [...prevFilteredPosts, ...nextData]); // Atualiza os dados exibidos
+      setData((prevData) => [...prevData, ...nextData]);
+      setFilteredPosts((prevFilteredPosts) => [...prevFilteredPosts, ...nextData]);
       setLoading(false);
     }, 1000);
   };
 
+  const handleEdit = (post: Post) => {
+    navigation.navigate('EditPost', { post });
+  };
+
   const renderItem = ({ item }: { item: Post }) => (
+    <View style={styles.postItem}>
       <TouchableOpacity
-      style={styles.postItem}
-      onPress={() => navigation.navigate('ItemPost', { post: item })} // Passando o objeto "item"
-    >
-      <Text style={styles.postTitle}>{item.title}</Text>
-      <Text style={styles.postAuthor}>Autor: {item.author}</Text>
-      <Text style={styles.postDescription}>{item.content}</Text>
-    </TouchableOpacity>
+        style={styles.postContent}
+        onPress={() => navigation.navigate('ItemPost', { post: item })}
+      >
+        <Text style={styles.postTitle}>{item.title}</Text>
+        <Text style={styles.postAuthor}>Autor: {item.author}</Text>
+        <Text style={styles.postDescription}>{item.content}</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity onPress={() => handleEdit(item)} style={styles.editButton}>
+        <Ionicons name="create-outline" size={24} color="red" />
+      </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -88,7 +98,7 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
         onChangeText={handleSearch}
       />
       <FlatList
-        data={filteredPosts} // Use os dados filtrados para exibição
+        data={filteredPosts}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
@@ -100,7 +110,6 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -117,6 +126,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   postItem: {
+    flexDirection: 'row',
     padding: 16,
     marginBottom: 8,
     backgroundColor: "#fff",
@@ -126,6 +136,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+  },
+  postContent: {
+    flex: 1,
   },
   postTitle: {
     fontSize: 16,
@@ -140,9 +153,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
   },
-  noResults: {
-    textAlign: "center",
-    color: "#777",
-    marginTop: 16,
+  editButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+    borderRadius: 50,
+    marginLeft: 10,
   },
 });
