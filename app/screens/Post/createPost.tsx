@@ -1,3 +1,5 @@
+import { savePost } from '@/app/service/postService';
+import Post from '@/app/types/Post';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
@@ -5,26 +7,28 @@ export default function CreatePost({ navigation }: { navigation: any }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
+  
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title || !author || !content) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
-    const newPost = {
-      id: Math.random().toString(36).slice(2,9),
-      title,
-      author,
-      content,
-    };
-
-    navigation.navigate('PostStack', { screen: 'PostList', params: { newPost } });
-
-    Alert.alert('Sucesso', 'Postagem criada com sucesso!');
+    const newPost: Partial<Post> = {
+      title: title,
+      content: content,
+      publishedAt: new Date(),      
+    }
+    
+    await savePost(newPost)
+    
     setTitle('');
     setAuthor('');
     setContent('');
+    
+    navigation.navigate('PostStack', { screen: 'PostList' });
+
   };
 
   return (

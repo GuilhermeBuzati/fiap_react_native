@@ -14,3 +14,13 @@ export const fetchData = async (): Promise<Post[]> => {
     }
 };
 
+export const savePost = async (newPost: Partial<Post>): Promise<void> => {
+
+    try {
+        await api.post("/posts/", newPost);
+
+    } catch (err) {
+        console.log(err);
+        throw new Error("Erro ao salvar o post");
+    }
+};

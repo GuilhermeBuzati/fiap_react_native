@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Post from '@/app/types/Post';
 import { fetchData } from '@/app/service/postService';
@@ -12,17 +12,17 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
   const [filteredPosts, setFilteredPosts] = useState<Post[]>(data);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const loadPosts = async () => {
-      const data = await fetchData(); 
-
-      setData(data);
-
-      setFilteredPosts(data.slice(0, 10));
-    };
-
-    loadPosts();
-  }, []); 
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadPosts = async () => {
+        const data = await fetchData(); 
+        setData(data);
+        setFilteredPosts(data.slice(0, 10));
+      };
+  
+      loadPosts();
+    }, []) 
+  ); 
 
 
   const handleSearch = (text: string) => {
