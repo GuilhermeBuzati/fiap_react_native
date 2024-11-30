@@ -1,3 +1,4 @@
+import { signUp } from '@/app/service/teacherService';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
