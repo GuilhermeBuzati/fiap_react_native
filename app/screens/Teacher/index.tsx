@@ -17,7 +17,7 @@ const teachersData = [
 ];
 
 export default function TeacherList({ navigation }: { navigation: NavigationProp<any> }) {
-  const [data, setData] = useState(teachersData.slice(0, 5)); // Carrega os primeiros 5 professores
+  const [data, setData] = useState(teachersData.slice(0, 5));
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredTeachers, setFilteredTeachers] = useState(data);
   const [loading, setLoading] = useState(false);

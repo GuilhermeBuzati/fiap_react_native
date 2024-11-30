@@ -9,6 +9,9 @@ import TeacherList from './screens/Teacher';
 import CreateTeacher from './screens/Teacher/createTeacher';
 import EditTeacher from './screens/Teacher/editTeacher';
 import Login from './screens/Login';
+import StudentList from './screens/Student';
+import CreateStudent from './screens/Student/createStudent';
+import EditStudent from './screens/Student/editStudent';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -58,6 +61,27 @@ function TeacherStack() {
       />
     </Stack.Navigator>
   );
+
+}
+function StudentStack() {
+  return (
+    <Stack.Navigator initialRouteName="StudentList"       
+    screenOptions={{
+      headerShown: false,
+    }}>
+      <Stack.Screen
+        name="StudentList"
+        component={StudentList}
+        options={{ title: 'Lista de Alunos' }}
+
+      />
+      <Stack.Screen
+        name="EditStudent"
+        component={EditStudent}
+        options={{ title: 'Editar Aluno' }}
+      />
+    </Stack.Navigator>
+  );
 }
 
 export default function App() {
@@ -89,6 +113,16 @@ export default function App() {
           name="CreateTeacher"
           component={CreateTeacher}
           options={{ title: 'Cadastrar Professor' }}
+        />
+        <Drawer.Screen
+          name="StudentStack"
+          component={StudentStack}
+          options={{ title: 'Alunos' }}
+        />
+        <Drawer.Screen
+          name="CreateStudent"
+          component={CreateStudent}
+          options={{ title: 'Cadastrar Aluno' }}
         />
         <Drawer.Screen
           name="LoginProfessor"

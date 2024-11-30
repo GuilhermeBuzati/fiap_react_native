@@ -84,7 +84,7 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
       </TouchableOpacity>
       
       <TouchableOpacity onPress={() => handleEdit(item)} style={styles.editButton}>
-        <Ionicons name="create-outline" size={24} color="red" />
+        <Ionicons name="create-outline" size={24} color="blue" />
       </TouchableOpacity>
     </View>
   );
