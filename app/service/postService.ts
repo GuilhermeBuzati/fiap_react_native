@@ -37,3 +37,17 @@ export const editPost = async (post: Post): Promise<Post> => {
         throw new Error("Erro ao editar o post por id");
     }
 };
+
+export const deletePost = async (postId: String): Promise<Post> => {
+
+    try {
+        const result = await api.delete(`/posts/${postId}`);
+
+        return result.data;
+
+    } catch (err) {
+        console.log(err);
+        throw new Error("Erro ao deletar o post por id");
+    }
+};
+

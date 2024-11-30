@@ -3,7 +3,7 @@ import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet } from 'r
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Post from '@/app/types/Post';
-import { fetchData } from '@/app/service/postService';
+import { deletePost, fetchData } from '@/app/service/postService';
 
 
 export default function PostList({ navigation }: { navigation: NavigationProp<any> }) {
@@ -60,6 +60,10 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
     navigation.navigate('EditPost', { post });
   };
 
+  const handleDelete = async (postId: string) => {
+    await deletePost(postId);
+  };
+
   const renderItem = ({ item }: { item: Post }) => (
     <View style={styles.postItem}>
       <TouchableOpacity
@@ -71,9 +75,13 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
         <Text style={styles.postDescription}>{item.content}</Text>
       </TouchableOpacity>
       
-      <TouchableOpacity onPress={() => handleEdit(item)} style={styles.editButton}>
+      <TouchableOpacity onPress={() => handleEdit(item)} style={styles.iconButton}>
         <Ionicons name="create-outline" size={24} color="blue" />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.iconButton}>
+      <Ionicons name="trash-outline" size={24} color="red" />
+    </TouchableOpacity>
+
     </View>
   );
 
@@ -147,7 +155,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
   },
-  editButton: {
+  iconButton: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
