@@ -53,6 +53,9 @@ export default function CreatePost({ navigation }: { navigation: any }) {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Salvar Postagem</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonBack} onPress={() => navigation.goBack()}>
+        <Text style={styles.buttonText}>Voltar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -94,5 +97,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  
+  buttonBack: {
+    backgroundColor: '#ccc',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
   },
 });

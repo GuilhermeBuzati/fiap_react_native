@@ -95,6 +95,12 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
         onEndReachedThreshold={0.5}
         ListFooterComponent={loading ? <Text>Loading...</Text> : null}
       />
+        <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate('CreatePost')}
+      >
+        <Text style={styles.addButtonText}>Adicionar Postagem</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -147,5 +153,17 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 50,
     marginLeft: 10,
+  },
+  addButton: {
+    backgroundColor: '#007BFF',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
