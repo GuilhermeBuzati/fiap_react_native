@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { Post } from '@/app/types/Post'; // Ajuste o caminho de acordo com sua estrutura
 
 export default function EditPost({ route, navigation }: { route: any, navigation: NavigationProp<any> }) {
   const { post } = route.params; // Recebe o post a ser editado

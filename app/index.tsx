@@ -1,12 +1,13 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PostList from './screens/Post';
 import PostItem from './screens/Post/postItem';
 import CreatePost from './screens/Post/createPost';
-import { useWindowDimensions } from 'react-native';
 import EditPost from './screens/Post/editPost';
+import TeacherList from './screens/Teacher';
+import CreateTeacher from './screens/Teacher/createTeacher';
+import EditTeacher from './screens/Teacher/editTeacher';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -37,6 +38,27 @@ function PostStack() {
   );
 }
 
+function TeacherStack() {
+  return (
+    <Stack.Navigator initialRouteName="TeacherList"       
+    screenOptions={{
+      headerShown: false,
+    }}>
+      <Stack.Screen
+        name="TeacherList"
+        component={TeacherList}
+        options={{ title: 'Lista de Professores' }}
+
+      />
+        <Stack.Screen
+        name="EditTeacher"
+        component={EditTeacher}
+        options={{ title: 'Editar Professor' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
   return (
       <Drawer.Navigator initialRouteName="PostStack" 
@@ -56,6 +78,16 @@ export default function App() {
           name="CreatePost"
           component={CreatePost}
           options={{ title: 'Criar Nova Postagem' }}
+        />
+        <Drawer.Screen
+          name="TeacherStack"
+          component={TeacherStack}
+          options={{ title: 'Professores' }}
+        />
+        <Drawer.Screen
+          name="CreateTeacher"
+          component={CreateTeacher}
+          options={{ title: 'Cadastrar Professor' }}
         />
       </Drawer.Navigator>
   );
