@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { editPost } from '@/app/service/postService';
 
 export default function EditPost({ route, navigation }: { route: any, navigation: NavigationProp<any> }) {
-  const { post } = route.params; // Recebe o post a ser editado
+  const { post } = route.params;
   const [title, setTitle] = useState(post.title);
-  const [author, setAuthor] = useState(post.author);
   const [content, setContent] = useState(post.content);
 
-  const handleSave = () => {
-    if (!title || !author || !content) {
+  const handleSave = async () => {
+    if (!title  || !content) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
-    const updatedPost = { ...post, title, author, content };
-    console.log('Post atualizado:', updatedPost);
-
-    navigation.navigate('PostStack', { screen: 'PostList', params: { updatedPost } });
+    const updatedPost = { ...post, title, content };
+    
+    await editPost(updatedPost);
 
     Alert.alert('Sucesso', 'Postagem atualizada com sucesso!');
+    
+    navigation.navigate('PostStack', { screen: 'PostList'});
+
   };
 
   return (
@@ -31,12 +33,6 @@ export default function EditPost({ route, navigation }: { route: any, navigation
         placeholder="Título da postagem"
         value={title}
         onChangeText={setTitle}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Autor"
-        value={author}
-        onChangeText={setAuthor}
       />
       <TextInput
         style={[styles.input, styles.textArea]}
