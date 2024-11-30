@@ -2,36 +2,28 @@ import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
-export default function CreateTeacher({ navigation }: { navigation: NavigationProp<any> }) {
-  const [name, setName] = useState('');
+export default function Login({ navigation }: { navigation: NavigationProp<any> }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    if (!name || !email || !password || !confirmPassword) {
+  const handleLogin = async () => {
+    if (!email || !password) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Erro', 'As senhas não coincidem.');
-      console.log('Erro: As senhas não coincidem.');
       return;
     }
 
     setLoading(true);
 
     try {
-      // Lógica para envio ao servidor aqui
-      Alert.alert('Sucesso', 'Professor cadastrado com sucesso!');
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
+      if (email === 'usuario@example.com' && password === 'senha123') {
+        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+        navigation.navigate('Home');
+      } else {
+        Alert.alert('Erro', 'E-mail ou senha inválidos.');
+      }
     } catch (error) {
-      Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o professor.');
+      Alert.alert('Erro', 'Ocorreu um erro ao fazer login.');
     } finally {
       setLoading(false);
     }
@@ -39,14 +31,9 @@ export default function CreateTeacher({ navigation }: { navigation: NavigationPr
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Cadastrar Professor</Text>
+      <Text style={styles.header}>Bem-vindo</Text>
+      <Text style={styles.subHeader}>Faça login para continuar</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nome do professor"
-        value={name}
-        onChangeText={setName}
-      />
       <TextInput
         style={styles.input}
         placeholder="E-mail"
@@ -61,24 +48,18 @@ export default function CreateTeacher({ navigation }: { navigation: NavigationPr
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirme a senha"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
+        autoCapitalize="none"
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? 'Enviando...' : 'Cadastrar'}</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+        <Text style={styles.buttonText}>{loading ? 'Carregando...' : 'Entrar'}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('LoginProfessor')}
+        onPress={() => navigation.navigate('CreateTeacher')} // Altere "Register" para a tela de cadastro
         style={styles.registerButton}
       >
-        <Text style={styles.registerText}>Já possui conta? Conectar-se</Text>
+        <Text style={styles.registerText}>Não tem uma conta? Cadastre-se</Text>
       </TouchableOpacity>
     </View>
   );
@@ -87,13 +68,20 @@ export default function CreateTeacher({ navigation }: { navigation: NavigationPr
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f5f5f5',
   },
   header: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#333333',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  subHeader: {
+    fontSize: 16,
+    color: '#666',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -111,13 +99,12 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 10,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },  
+  },
   registerButton: {
     marginTop: 15,
     alignItems: 'center',

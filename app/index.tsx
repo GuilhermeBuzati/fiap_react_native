@@ -8,6 +8,7 @@ import EditPost from './screens/Post/editPost';
 import TeacherList from './screens/Teacher';
 import CreateTeacher from './screens/Teacher/createTeacher';
 import EditTeacher from './screens/Teacher/editTeacher';
+import Login from './screens/Login';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -88,6 +89,11 @@ export default function App() {
           name="CreateTeacher"
           component={CreateTeacher}
           options={{ title: 'Cadastrar Professor' }}
+        />
+        <Drawer.Screen
+          name="LoginProfessor"
+          component={Login}
+          options={{ title: 'Login' }}
         />
       </Drawer.Navigator>
   );
