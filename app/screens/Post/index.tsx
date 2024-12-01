@@ -62,10 +62,8 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
 
   const handleDelete = async (postId: string) => {
     try {
-      // Chamada para deletar o post
       await deletePost(postId);
   
-      // Atualizar a lista removendo o item deletado
       setFilteredPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
       
       Alert.alert('Sucesso', 'Postagem deletada com sucesso!');
