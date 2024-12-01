@@ -1,12 +1,31 @@
 import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/", 
+  baseURL: 'http://localhost:3000/',
   headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3IiOiJ7XCJpZFwiOlwiOWQwNGE1MzItYzRjMy00MGVhLTgwNmMtZWYwN2ZjMzczOTJkXCIsXCJlbWFpbFwiOlwiZXhhbXAxMWxlQGV4YW1wbGUyMjEuY29tXCIsXCJ1c2VybmFtZVwiOlwiSm9obiBEb2VcIn0iLCJpYXQiOjE3MzI5NDYzOTQsImV4cCI6MTczMjk0ODE5NH0.zBVQuPrt-BPLsDHNdSTkVy4U3myFS2DmIK_T_d92WaM" ,
+    'Content-Type': 'application/json',
   },
 });
+
+
+api.interceptors.request.use(
+  async (config) => {
+    try {
+      const token = await AsyncStorage.getItem('@auth_token');
+      if (token) {
+        console.log(token)
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (error) {
+      console.error('Erro ao recuperar o token:', error);
+    }
+    return config;
+  },
+  (error) => {
+    // Lidar com erros no interceptor
+    return Promise.reject(error);
+  }
+);
 
 export default api;

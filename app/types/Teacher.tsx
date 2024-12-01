@@ -9,3 +9,5 @@ export interface TeacherSignUp{
     email: string;
     password: string;    
 }
+
+

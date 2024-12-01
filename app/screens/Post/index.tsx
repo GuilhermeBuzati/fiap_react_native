@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Post from '@/app/types/Post';
@@ -61,9 +61,20 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
   };
 
   const handleDelete = async (postId: string) => {
-    await deletePost(postId);
+    try {
+      // Chamada para deletar o post
+      await deletePost(postId);
+  
+      // Atualizar a lista removendo o item deletado
+      setFilteredPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+      
+      Alert.alert('Sucesso', 'Postagem deletada com sucesso!');
+    } catch (error) {
+      console.error('Erro ao deletar o post:', error);
+      Alert.alert('Erro', 'Não foi possível deletar a postagem.');
+    }
   };
-
+  
   const renderItem = ({ item }: { item: Post }) => (
     <View style={styles.postItem}>
       <TouchableOpacity

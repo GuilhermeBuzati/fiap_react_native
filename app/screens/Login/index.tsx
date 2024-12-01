@@ -1,4 +1,5 @@
-import { signUp } from '@/app/service/teacherService';
+import { signIn, signUp } from '@/app/service/teacherService';
+import { SignInProps } from '@/app/types/Login';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
@@ -16,18 +17,19 @@ export default function Login({ navigation }: { navigation: NavigationProp<any> 
 
     setLoading(true);
 
-    try {
-      if (email === 'usuario@example.com' && password === 'senha123') {
-        Alert.alert('Sucesso', 'Login realizado com sucesso!');
-        navigation.navigate('Home');
-      } else {
-        Alert.alert('Erro', 'E-mail ou senha inválidos.');
-      }
-    } catch (error) {
-      Alert.alert('Erro', 'Ocorreu um erro ao fazer login.');
-    } finally {
-      setLoading(false);
+    const signInProps : SignInProps = {
+      email,
+      password,
     }
+
+    console.log(signInProps);
+    
+    await signIn(signInProps);
+
+    navigation.navigate('PostStack');
+
+    setLoading(false);
+
   };
 
   return (

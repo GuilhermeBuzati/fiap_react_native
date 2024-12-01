@@ -28,6 +28,8 @@ export const savePost = async (newPost: Partial<Post>): Promise<void> => {
 export const editPost = async (post: Post): Promise<Post> => {
 
     try {
+
+        console.log(api.defaults.headers);
         const result = await api.put(`/posts/${post.id}`, post);
 
         return result.data;

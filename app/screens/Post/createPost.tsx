@@ -5,12 +5,11 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 
 export default function CreatePost({ navigation }: { navigation: any }) {
   const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
   
 
   const handleSubmit = async () => {
-    if (!title || !author || !content) {
+    if (!title || !content) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
@@ -24,7 +23,6 @@ export default function CreatePost({ navigation }: { navigation: any }) {
     await savePost(newPost)
     
     setTitle('');
-    setAuthor('');
     setContent('');
     
     navigation.navigate('PostStack', { screen: 'PostList' });
@@ -39,12 +37,6 @@ export default function CreatePost({ navigation }: { navigation: any }) {
         placeholder="Título da postagem"
         value={title}
         onChangeText={setTitle}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Autor"
-        value={author}
-        onChangeText={setAuthor}
       />
       <TextInput
         style={[styles.input, styles.textArea]}
