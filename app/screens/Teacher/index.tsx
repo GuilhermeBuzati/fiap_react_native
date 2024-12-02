@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import useAuth from '@/app/hooks/useAuthenticated';
 
 const teachersData = [
   { id: 1, name: 'Professor 1', email: 'prof1@email.com', subject: 'Matemática' },
@@ -21,6 +22,7 @@ export default function TeacherList({ navigation }: { navigation: NavigationProp
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredTeachers, setFilteredTeachers] = useState(data);
   const [loading, setLoading] = useState(false);
+  const isAuthenticated = useAuth();
 
   const handleSearch = (text: string) => {
     setSearchTerm(text);
@@ -92,7 +94,16 @@ export default function TeacherList({ navigation }: { navigation: NavigationProp
         onEndReachedThreshold={0.5}
         ListFooterComponent={loading ? <Text>Carregando...</Text> : null}
       />
+      {isAuthenticated && (
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('CreateTeacher')}
+        >
+          <Text style={styles.addButtonText}>Adicionar Professor</Text>
+        </TouchableOpacity>
+      )}
     </View>
+    
   );
 }
 
@@ -144,5 +155,17 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 50,
     marginLeft: 10,
+  },
+  addButton: {
+    backgroundColor: '#007BFF',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

@@ -18,10 +18,10 @@ const Stack = createNativeStackNavigator();
 
 function PostStack() {
   return (
-    <Stack.Navigator initialRouteName="PostList"       
-    screenOptions={{
-      headerShown: false,
-    }}>
+    <Stack.Navigator initialRouteName="PostList"
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen
         name="PostList"
         component={PostList}
@@ -33,10 +33,15 @@ function PostStack() {
         component={PostItem}
         options={{ title: 'Detalhes da Postagem' }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="EditPost"
         component={EditPost}
         options={{ title: 'Editar Postagem' }}
+      />
+      <Stack.Screen
+        name="CreatePost"
+        component={CreatePost}
+        options={{ title: 'Criar Nova Postagem' }}
       />
     </Stack.Navigator>
   );
@@ -44,20 +49,25 @@ function PostStack() {
 
 function TeacherStack() {
   return (
-    <Stack.Navigator initialRouteName="TeacherList"       
-    screenOptions={{
-      headerShown: false,
-    }}>
+    <Stack.Navigator initialRouteName="TeacherList"
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen
         name="TeacherList"
         component={TeacherList}
         options={{ title: 'Lista de Professores' }}
 
       />
-        <Stack.Screen
+      <Stack.Screen
         name="EditTeacher"
         component={EditTeacher}
         options={{ title: 'Editar Professor' }}
+      />
+      <Stack.Screen
+        name="CreateTeacher"
+        component={CreateTeacher}
+        options={{ title: 'Cadastrar Professor' }}
       />
     </Stack.Navigator>
   );
@@ -65,10 +75,10 @@ function TeacherStack() {
 }
 function StudentStack() {
   return (
-    <Stack.Navigator initialRouteName="StudentList"       
-    screenOptions={{
-      headerShown: false,
-    }}>
+    <Stack.Navigator initialRouteName="StudentList"
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen
         name="StudentList"
         component={StudentList}
@@ -80,13 +90,18 @@ function StudentStack() {
         component={EditStudent}
         options={{ title: 'Editar Aluno' }}
       />
+      <Stack.Screen
+        name="CreateStudent"
+        component={CreateStudent}
+        options={{ title: 'Cadastrar Aluno' }}
+      />
     </Stack.Navigator>
   );
 }
 
 export default function App() {
   return (
-      <Drawer.Navigator initialRouteName="PostStack" 
+    <Drawer.Navigator initialRouteName="PostStack"
       screenOptions={{
         drawerActiveTintColor: '#FFFFFF',
         drawerActiveBackgroundColor: '#003CB3',
@@ -94,41 +109,29 @@ export default function App() {
           width: 240,
         },
       }}>
-        <Drawer.Screen
-          name="PostStack"
-          component={PostStack}
-          options={{ title: 'Postagens' }}
-        />
-        <Drawer.Screen
-          name="CreatePost"
-          component={CreatePost}
-          options={{ title: 'Criar Nova Postagem' }}
-        />
-        <Drawer.Screen
-          name="TeacherStack"
-          component={TeacherStack}
-          options={{ title: 'Professores' }}
-        />
-        <Drawer.Screen
-          name="CreateTeacher"
-          component={CreateTeacher}
-          options={{ title: 'Cadastrar Professor' }}
-        />
-        <Drawer.Screen
-          name="StudentStack"
-          component={StudentStack}
-          options={{ title: 'Alunos' }}
-        />
-        <Drawer.Screen
-          name="CreateStudent"
-          component={CreateStudent}
-          options={{ title: 'Cadastrar Aluno' }}
-        />
-        <Drawer.Screen
-          name="LoginProfessor"
-          component={Login}
-          options={{ title: 'Login' }}
-        />
-      </Drawer.Navigator>
+      <Drawer.Screen
+        name="PostStack"
+        component={PostStack}
+        options={{ title: 'Postagens' }}
+      />
+
+      <Drawer.Screen
+        name="TeacherStack"
+        component={TeacherStack}
+        options={{ title: 'Professores' }}
+      />
+
+      <Drawer.Screen
+        name="StudentStack"
+        component={StudentStack}
+        options={{ title: 'Alunos' }}
+      />
+
+      <Drawer.Screen
+        name="LoginProfessor"
+        component={Login}
+        options={{ title: 'Login' }}
+      />
+    </Drawer.Navigator>
   );
 }
