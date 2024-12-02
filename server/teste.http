@@ -1,0 +1,64 @@
+GET http://localhost:3000/students
+
+###
+
+POST http://localhost:3000/authors/signup
+Content-Type: application/json
+
+{
+    "email": "heli@elton.com",
+    "username": "Jovem de valor",
+    "password": "HolaMarilene"
+}
+
+###
+
+POST http://localhost:3000/authors/signin
+Content-Type: application/json
+
+{
+    "email": "heli@elton.com",
+    "password": "HolaMarilene"
+}
+
+### 
+
+POST http://localhost:3000/students
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3IiOiJ7XCJpZFwiOlwiOTY0YTE4OGEtZDY5Ny00YjhkLTg0OWMtYTJkNGUzMDk1YzZmXCIsXCJlbWFpbFwiOlwiaGVsaUBlbHRvbi5jb21cIixcInVzZXJuYW1lXCI6XCJKb3ZlbSBkZSB2YWxvclwifSIsImlhdCI6MTczMzEwOTg0MiwiZXhwIjoxNzMzMTExNjQyfQ.B4boOJKA4e7zFtDR1R9SZc8XSvlf1x_WLDNk0ASixQs
+
+{
+    "email": "elton123@elton.com",
+    "username": "Ronaldo Ronaldo"
+}
+
+### 
+
+GET http://localhost:3000/students
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3IiOiJ7XCJpZFwiOlwiOTY0YTE4OGEtZDY5Ny00YjhkLTg0OWMtYTJkNGUzMDk1YzZmXCIsXCJlbWFpbFwiOlwiaGVsaUBlbHRvbi5jb21cIixcInVzZXJuYW1lXCI6XCJKb3ZlbSBkZSB2YWxvclwifSIsImlhdCI6MTczMzEwOTg0MiwiZXhwIjoxNzMzMTExNjQyfQ.B4boOJKA4e7zFtDR1R9SZc8XSvlf1x_WLDNk0ASixQs
+
+### 
+
+PUT http://localhost:3000/students/4818b65a-6512-4248-a4ab-9cea9ab25283
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3IiOiJ7XCJpZFwiOlwiOTY0YTE4OGEtZDY5Ny00YjhkLTg0OWMtYTJkNGUzMDk1YzZmXCIsXCJlbWFpbFwiOlwiaGVsaUBlbHRvbi5jb21cIixcInVzZXJuYW1lXCI6XCJKb3ZlbSBkZSB2YWxvclwifSIsImlhdCI6MTczMzEwOTg0MiwiZXhwIjoxNzMzMTExNjQyfQ.B4boOJKA4e7zFtDR1R9SZc8XSvlf1x_WLDNk0ASixQs
+
+{
+    "id": "4818b65a-6512-4248-a4ab-9cea9ab25283",
+    "email": "elton@elton.com",
+    "username": "Elton John"
+}
+
+###
+
+DELETE http://localhost:3000/students/4818b65a-6512-4248-a4ab-9cea9ab25283
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3IiOiJ7XCJpZFwiOlwiOTY0YTE4OGEtZDY5Ny00YjhkLTg0OWMtYTJkNGUzMDk1YzZmXCIsXCJlbWFpbFwiOlwiaGVsaUBlbHRvbi5jb21cIixcInVzZXJuYW1lXCI6XCJKb3ZlbSBkZSB2YWxvclwifSIsImlhdCI6MTczMzEwOTg0MiwiZXhwIjoxNzMzMTExNjQyfQ.B4boOJKA4e7zFtDR1R9SZc8XSvlf1x_WLDNk0ASixQs
+
+###
+
+
+GET http://localhost:3000/authors
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3IiOiJ7XCJpZFwiOlwiOTY0YTE4OGEtZDY5Ny00YjhkLTg0OWMtYTJkNGUzMDk1YzZmXCIsXCJlbWFpbFwiOlwiaGVsaUBlbHRvbi5jb21cIixcInVzZXJuYW1lXCI6XCJKb3ZlbSBkZSB2YWxvclwifSIsImlhdCI6MTczMzEwOTg0MiwiZXhwIjoxNzMzMTExNjQyfQ.B4boOJKA4e7zFtDR1R9SZc8XSvlf1x_WLDNk0ASixQs

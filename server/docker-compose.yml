@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  node-server:
+    build: .
+    ports:
+      - "${PORT}:${PORT}"
+    env_file: 
+      - .env
+    depends_on:
+      - db
+
+  db:
+    container_name: postgres_fiap
+    image: postgres:13
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
