@@ -90,12 +90,6 @@ export default function CreateTeacher({ navigation }: { navigation: NavigationPr
         {loading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.buttonText}>Cadastrar</Text>}
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate('LoginProfessor')}
-        style={styles.registerButton}
-      >
-        <Text style={styles.registerText}>Já possui conta? Conectar-se</Text>
-      </TouchableOpacity>
     </View>
   );
 }
