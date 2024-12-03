@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PostList from './screens/Post';
@@ -13,6 +13,10 @@ import CreateStudent from './screens/Student/createStudent';
 import EditStudent from './screens/Student/editStudent';
 import Login from './screens/Teacher/signInTeacher';
 import SignUp from './screens/Teacher/signUpTeacher';
+import useAuth from './hooks/useAuthenticated';
+import { Logout } from './components/LogoutButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from 'expo-router';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -107,6 +111,19 @@ function StudentStack() {
 }
 
 export default function App() {
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const checkAuth = async () => {
+        const token = await AsyncStorage.getItem('@auth_token');
+        setIsAuthenticated(!!token);
+      };
+      checkAuth();
+    }, []) 
+  ); 
+
   return (
     <Drawer.Navigator initialRouteName="PostStack"
       screenOptions={{
@@ -114,7 +131,7 @@ export default function App() {
         drawerActiveBackgroundColor: '#003CB3',
         drawerStyle: {
           width: 240,
-        },
+        },      
       }}>
       <Drawer.Screen
         name="PostStack"
@@ -122,23 +139,36 @@ export default function App() {
         options={{ title: 'Postagens' }}
       />
 
-      <Drawer.Screen
-        name="TeacherStack"
-        component={TeacherStack}
-        options={{ title: 'Professores' }}
-      />
+      {isAuthenticated && (
 
-      <Drawer.Screen
-        name="StudentStack"
-        component={StudentStack}
-        options={{ title: 'Alunos' }}
-      />
+        <>
+        <Drawer.Screen
+          name="TeacherStack"
+          component={TeacherStack}
+          options={{ title: 'Professores' }} />
+           
+        <Drawer.Screen
+            name="StudentStack"
+            component={StudentStack}
+            options={{ title: 'Alunos' }} />
+        <Drawer.Screen
+            name="Logout"
+            component={Logout}
+            options={{ title: 'Desconectar' }}
+          />
+        </>
+      )}
 
-      <Drawer.Screen
-        name="LoginProfessor"
-        component={Login}
-        options={{ title: 'Login' }}
-      />
+      {!isAuthenticated && (
+        <Drawer.Screen
+          name="LoginProfessor"
+          component={Login}
+          options={{ title: 'Conectar' }}
+        />
+      )}
+ 
+
+
     </Drawer.Navigator>
   );
 }
