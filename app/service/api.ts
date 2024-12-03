@@ -13,8 +13,6 @@ api.interceptors.request.use(
   async (config) => {
     try {
         const token = await AsyncStorage.getItem('@auth_token');
-
-        console.log(token)
     
         if (!token) {
           config.headers['Authorization'] = '';

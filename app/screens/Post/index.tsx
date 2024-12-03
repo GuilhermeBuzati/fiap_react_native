@@ -4,6 +4,7 @@ import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Post from '@/app/types/Post';
 import { deletePost, fetchData } from '@/app/service/postService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function PostList({ navigation }: { navigation: NavigationProp<any> }) {
@@ -11,6 +12,7 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPosts, setFilteredPosts] = useState<Post[]>(data);
   const [loading, setLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -19,7 +21,13 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
         setData(data);
         setFilteredPosts(data.slice(0, 10));
       };
-  
+
+      const checkAuth = async () => {
+        const token = await AsyncStorage.getItem('@auth_token');
+        setIsAuthenticated(!!token);
+      };
+
+      checkAuth()
       loadPosts();
     }, []) 
   ); 
@@ -84,12 +92,13 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
         <Text style={styles.postDescription}>{item.content}</Text>
       </TouchableOpacity>
       
-      <TouchableOpacity onPress={() => handleEdit(item)} style={styles.iconButton}>
-        <Ionicons name="create-outline" size={24} color="blue" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.iconButton}>
-      <Ionicons name="trash-outline" size={24} color="red" />
-    </TouchableOpacity>
+      {isAuthenticated && (
+      <><TouchableOpacity onPress={() => handleEdit(item)} style={styles.iconButton}>
+          <Ionicons name="create-outline" size={24} color="blue" />
+        </TouchableOpacity><TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.iconButton}>
+            <Ionicons name="trash-outline" size={24} color="red" />
+          </TouchableOpacity></>
+      )}
 
     </View>
   );
@@ -112,12 +121,15 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
         onEndReachedThreshold={0.5}
         ListFooterComponent={loading ? <Text>Loading...</Text> : null}
       />
+      {isAuthenticated && (
         <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => navigation.navigate('CreatePost')}
-      >
-        <Text style={styles.addButtonText}>Adicionar Postagem</Text>
-      </TouchableOpacity>
+          style={styles.addButton}
+          onPress={() => navigation.navigate('CreatePost')}
+        >
+          <Text style={styles.addButtonText}>Adicionar Postagem</Text>
+        </TouchableOpacity>
+      )}
+
     </View>
   );
 }
