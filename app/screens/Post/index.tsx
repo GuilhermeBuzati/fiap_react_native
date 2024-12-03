@@ -80,7 +80,7 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
         onPress={() => navigation.navigate('ItemPost', { post: item })}
       >
         <Text style={styles.postTitle}>{item.title}</Text>
-        <Text style={styles.postAuthor}>Autor: {item.author.name}</Text>
+        <Text style={styles.postAuthor}>{item.author.name}</Text>
         <Text style={styles.postDescription}>{item.content}</Text>
       </TouchableOpacity>
       

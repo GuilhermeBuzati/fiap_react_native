@@ -6,6 +6,15 @@ export default interface Teacher{
     password: string;    
 }
 
+
+export default interface TeacherPost{
+    id: string,
+    name: string;
+    email: string;
+    password: string;    
+}
+
+
 export interface TeacherSignUp{
     username: string;
     email: string;

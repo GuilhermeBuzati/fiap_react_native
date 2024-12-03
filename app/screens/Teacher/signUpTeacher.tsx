@@ -44,7 +44,7 @@ export default function SignUp({ navigation }: { navigation: NavigationProp<any>
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      navigation.navigate('TeacherStack', { screen: 'TeacherList' });
+      navigation.navigate('LoginProfessor');
     } catch (error) {
       Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o professor. Tente novamente mais tarde.');
       console.error('Erro ao cadastrar professor:', error);
