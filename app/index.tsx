@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PostList from './screens/Post';
 import PostItem from './screens/Post/postItem';
@@ -13,12 +13,12 @@ import CreateStudent from './screens/Student/createStudent';
 import EditStudent from './screens/Student/editStudent';
 import Login from './screens/Teacher/signInTeacher';
 import SignUp from './screens/Teacher/signUpTeacher';
-import useAuth from './hooks/useAuthenticated';
 import { Logout } from './components/LogoutButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons'; // Para ícones
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function PostStack() {
@@ -31,7 +31,6 @@ function PostStack() {
         name="PostList"
         component={PostList}
         options={{ title: 'Lista de Postagens' }}
-
       />
       <Stack.Screen
         name="ItemPost"
@@ -62,7 +61,6 @@ function TeacherStack() {
         name="TeacherList"
         component={TeacherList}
         options={{ title: 'Lista de Professores' }}
-
       />
       <Stack.Screen
         name="EditTeacher"
@@ -74,7 +72,6 @@ function TeacherStack() {
         component={CreateTeacher}
         options={{ title: 'Cadastrar Professor' }}
       />
-
       <Stack.Screen
         name="SignUp"
         component={SignUp}
@@ -82,8 +79,8 @@ function TeacherStack() {
       />
     </Stack.Navigator>
   );
-
 }
+
 function StudentStack() {
   return (
     <Stack.Navigator initialRouteName="StudentList"
@@ -94,7 +91,6 @@ function StudentStack() {
         name="StudentList"
         component={StudentList}
         options={{ title: 'Lista de Alunos' }}
-
       />
       <Stack.Screen
         name="EditStudent"
@@ -111,7 +107,6 @@ function StudentStack() {
 }
 
 export default function App() {
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useFocusEffect(
@@ -121,54 +116,69 @@ export default function App() {
         setIsAuthenticated(!!token);
       };
       checkAuth();
-    }, []) 
-  ); 
+    }, [])
+  );
 
   return (
-    <Drawer.Navigator initialRouteName="PostStack"
+    <Tab.Navigator
+      initialRouteName="PostStack"
       screenOptions={{
-        drawerActiveTintColor: '#FFFFFF',
-        drawerActiveBackgroundColor: '#003CB3',
-        drawerStyle: {
-          width: 240,
-        },      
-      }}>
-      <Drawer.Screen
+        tabBarActiveTintColor: '#003CB3',
+        tabBarInactiveTintColor: '#777',
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 10,
+        },
+      }}
+    >
+      <Tab.Screen
         name="PostStack"
         component={PostStack}
-        options={{ title: 'Postagens' }}
+        options={{
+          title: 'Postagens',
+          tabBarIcon: ({ color }) => <Ionicons name="list" size={24} color={color} />,
+        }}
       />
 
       {isAuthenticated && (
-
         <>
-        <Drawer.Screen
-          name="TeacherStack"
-          component={TeacherStack}
-          options={{ title: 'Professores' }} />
-           
-        <Drawer.Screen
+          <Tab.Screen
+            name="TeacherStack"
+            component={TeacherStack}
+            options={{
+              title: 'Professores',
+              tabBarIcon: ({ color }) => <Ionicons name="school" size={24} color={color} />,
+            }}
+          />
+          <Tab.Screen
             name="StudentStack"
             component={StudentStack}
-            options={{ title: 'Alunos' }} />
-        <Drawer.Screen
+            options={{
+              title: 'Alunos',
+              tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
+            }}
+          />
+          <Tab.Screen
             name="Logout"
             component={Logout}
-            options={{ title: 'Desconectar' }}
+            options={{
+              title: 'Desconectar',
+              tabBarIcon: ({ color }) => <Ionicons name="log-out" size={24} color={color} />,
+            }}
           />
         </>
       )}
 
       {!isAuthenticated && (
-        <Drawer.Screen
+        <Tab.Screen
           name="LoginProfessor"
           component={Login}
-          options={{ title: 'Conectar' }}
+          options={{
+            title: 'Login',
+            tabBarIcon: ({ color }) => <Ionicons name="log-in" size={24} color={color} />,
+          }}
         />
       )}
- 
-
-
-    </Drawer.Navigator>
+    </Tab.Navigator>
   );
 }
