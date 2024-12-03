@@ -9,7 +9,7 @@ export function Logout({ navigation }: any) {
         Alert.alert('Logout', 'Você saiu com sucesso!');
         navigation.reset({
           index: 0,
-          routes: [{ name: 'LoginProfessor' }],
+          routes: [{ name: 'PostStack' }],
         });
       };
   

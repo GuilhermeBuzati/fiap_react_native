@@ -109,19 +109,21 @@ function StudentStack() {
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const checkAuth = async () => {
-        const token = await AsyncStorage.getItem('@auth_token');
-        setIsAuthenticated(!!token);
-      };
-      checkAuth();
-    }, [])
-  );
+
 
   return (
     <Tab.Navigator
       initialRouteName="PostStack"
+      screenListeners={({ navigation }) => ({
+        focus: (e) => {
+          const checkAuth = async () => {
+            const token = await AsyncStorage.getItem('@auth_token');
+            setIsAuthenticated(!!token);
+          };
+          checkAuth()
+
+        }
+      })}
       screenOptions={{
         tabBarActiveTintColor: '#003CB3',
         tabBarInactiveTintColor: '#777',
