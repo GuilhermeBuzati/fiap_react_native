@@ -1,3 +1,4 @@
+import { saveStudent } from '@/app/service/studentService';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
@@ -5,25 +6,41 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 export default function CreateStudent({ navigation }: { navigation: NavigationProp<any> })  {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [classroom, setClassroom] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    if (!name || !email || !classroom) {
+  const handleSubmit = async () => {
+    if (!name.trim() || !email.trim()) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
-
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
+      return;
+    }
+  
     setLoading(true);
-
-    // Simulando uma ação para salvar aluno
-    setTimeout(() => {
+  
+    try {
+      const newStudent = { username: name, email: email };
+  
+      await saveStudent(newStudent);
+  
+      setName('');
+      setEmail('');
+  
+      Alert.alert('Sucesso', 'Estudante cadastrado com sucesso!');
+  
+      navigation.navigate('StudentStack', { screen: 'StudentList' });
+    } catch (error) {
+      console.error('Erro ao salvar o estudante:', error);
+      Alert.alert('Erro', 'Ocorreu um problema ao cadastrar o estudante. Tente novamente.');
+    } finally {
       setLoading(false);
-      Alert.alert('Sucesso', 'Aluno cadastrado com sucesso!');
-      navigation.navigate('StudentList', { newStudent: { name, email, classroom } });
-    }, 1000);
+    }
   };
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Cadastrar Aluno</Text>
@@ -41,12 +58,6 @@ export default function CreateStudent({ navigation }: { navigation: NavigationPr
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Turma"
-        value={classroom}
-        onChangeText={setClassroom}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>

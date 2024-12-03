@@ -12,6 +12,10 @@ import { createAuthorController, createPostController } from "#controller/mod.ts
 import { KyselyDaoFactory } from "#infrastructure/dao_adapter/_factory.ts";
 import { createStudentController } from "#controller/student_controller.ts";
 
+import dotenv from 'dotenv';
+
+dotenv.config(); 
+
 const environment = parseEnv(env);
 
 const jwtService = new JsonwebtokenJwtService(environment.secret);

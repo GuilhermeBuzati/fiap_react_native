@@ -4,7 +4,8 @@ import { TeacherSignUp } from '../types/Teacher';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export const signUp = async (teacher: TeacherSignUp): Promise<void> => {
+
+export const saveTeacher = async (teacher: TeacherSignUp): Promise<void> => {
 
     try {
         const result = await api.post("/authors/signup", teacher);

@@ -1,40 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { deleteStudent, fetchStudents } from '@/app/service/studentService';
+import Student from '@/app/types/Student';
 
 export default function StudentList({ route, navigation }: { route: any, navigation: NavigationProp<any> }) {
-  const initialStudents = [
-    { id: '1', name: 'João Silva', email: 'joao@example.com', classroom: '1A' },
-    { id: '2', name: 'Maria Oliveira', email: 'maria@example.com', classroom: '2B' },
-  ];
-
-  const [students, setStudents] = useState(initialStudents);
+  const [data, setData] = useState<Student[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredStudents, setFilteredStudents] = useState(initialStudents);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>(data);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (route.params?.newStudent) {
-      const newStudent = {
-        id: (students.length + 1).toString(),
-        ...route.params.newStudent,
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadPosts = async () => {
+        const data = await fetchStudents(); 
+        setData(data);
+        setFilteredStudents(data.slice(0, 10));
       };
-      setStudents((prev) => [...prev, newStudent]);
-      setFilteredStudents((prev) => [...prev, newStudent]);
-    }
-  }, [route.params?.newStudent]);
+  
+      loadPosts();
+    }, []) 
+  ); 
+
 
   const handleSearch = (text: string) => {
     setSearchTerm(text);
     if (text === '') {
-      setFilteredStudents(students);
+      setFilteredStudents(data);
     } else {
-      const filtered = students.filter(
+      const filtered = data.filter(
         (student) =>
-          student.name.toLowerCase().includes(text.toLowerCase()) ||
-          student.email.toLowerCase().includes(text.toLowerCase()) ||
-          student.classroom.toLowerCase().includes(text.toLowerCase())
+          student.username.toLowerCase().includes(text.toLowerCase()) ||
+          student.email.toLowerCase().includes(text.toLowerCase())
       );
       setFilteredStudents(filtered);
     }
@@ -44,20 +42,35 @@ export default function StudentList({ route, navigation }: { route: any, navigat
     navigation.navigate('EditStudent', { student });
   };
 
+  const handleDelete = async (studentId: string) => {
+    try {
+      await deleteStudent(studentId);
+  
+      setFilteredStudents((prevStudents) => prevStudents.filter((student) => student.id !== studentId));
+      
+      Alert.alert('Sucesso', 'Estudante deletado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao deletar o estudante:', error);
+      Alert.alert('Erro', 'Não foi possível deletar a estudante.');
+    }
+  };
+
   const renderItem = ({ item }: { item: any }) => (
     <View style={styles.studentItem}>
       <TouchableOpacity
         style={styles.studentContent}
         onPress={() => navigation.navigate('StudentDetails', { student: item })}
       >
-        <Text style={styles.studentName}>{item.name}</Text>
+        <Text style={styles.studentName}>{item.username}</Text>
         <Text style={styles.studentEmail}>{item.email}</Text>
-        <Text style={styles.studentClassroom}>Turma: {item.classroom}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => handleEdit(item)} style={styles.editButton}>
         <Ionicons name="create-outline" size={24} color="blue" />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.iconButton}>
+      <Ionicons name="trash-outline" size={24} color="red" />
+    </TouchableOpacity>
     </View>
   );
 
@@ -149,4 +162,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  iconButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+    borderRadius: 50,
+    marginLeft: 10,
+  }
 });

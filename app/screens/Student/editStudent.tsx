@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { editStudent } from '@/app/service/studentService';
 
 export default function EditStudent({
   route,
@@ -11,24 +12,28 @@ export default function EditStudent({
 }) {
   const { student } = route.params;
 
-  const [name, setName] = useState(student.name || '');
+  const [username, setName] = useState(student.username || '');
   const [email, setEmail] = useState(student.email || '');
-  const [classroom, setClassroom] = useState(student.classroom || '');
   const [loading, setLoading] = useState(false);
 
   const handleSave = async () => {
-    if (!name || !email || !classroom) {
+    if (!username || !email) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
     setLoading(true);
 
-    // Simulando o salvamento de dados e retorno ao listar
-    setTimeout(() => {
-      Alert.alert('Sucesso', 'Informações do aluno atualizadas!');
-      navigation.goBack();
-    }, 1000);
+    const updateStudent = { ...student, username, email};
+
+    console.log(updateStudent);
+    
+    await editStudent(updateStudent);
+
+    Alert.alert('Sucesso', 'Estudante atualizado com sucesso!');
+    
+    navigation.navigate('StudentStack', { screen: 'StudentList'});
+
   };
 
   return (
@@ -38,7 +43,7 @@ export default function EditStudent({
       <TextInput
         style={styles.input}
         placeholder="Nome do aluno"
-        value={name}
+        value={username}
         onChangeText={setName}
       />
       <TextInput
@@ -48,12 +53,6 @@ export default function EditStudent({
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Turma"
-        value={classroom}
-        onChangeText={setClassroom}
       />
 
       <TouchableOpacity

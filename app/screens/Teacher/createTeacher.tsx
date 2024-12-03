@@ -1,4 +1,4 @@
-import { signUp } from '@/app/service/teacherService';
+import { saveTeacher } from '@/app/service/teacherService';
 import { TeacherSignUp } from '@/app/types/Teacher';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
@@ -38,13 +38,13 @@ export default function CreateTeacher({ navigation }: { navigation: NavigationPr
     const signUpInfo: TeacherSignUp = { email, password, username };
 
     try {
-      await signUp(signUpInfo);
+      await saveTeacher(signUpInfo);
       Alert.alert('Sucesso', 'Professor cadastrado com sucesso!');
       setUsername('');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      navigation.navigate('TeacherStack');
+      navigation.navigate('TeacherStack', { screen: 'TeacherList' });
     } catch (error) {
       Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o professor. Tente novamente mais tarde.');
       console.error('Erro ao cadastrar professor:', error);
