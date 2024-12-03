@@ -67,6 +67,7 @@ export default function TeacherList({ navigation }: { navigation: NavigationProp
       await deleteTeacher(teacherId);
   
       setFilteredTeachers((prevTeachers) => prevTeachers.filter((teacher) => teacher.id !== teacherId));
+      setData((prevTeachers) => prevTeachers.filter((teacher) => teacher.id !== teacherId));
       
       Alert.alert('Sucesso', 'Professor deletado com sucesso!');
     } catch (error) {

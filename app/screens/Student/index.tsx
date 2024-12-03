@@ -47,6 +47,7 @@ export default function StudentList({ route, navigation }: { route: any, navigat
       await deleteStudent(studentId);
   
       setFilteredStudents((prevStudents) => prevStudents.filter((student) => student.id !== studentId));
+      setData((prevStudents) => prevStudents.filter((student) => student.id !== studentId));
       
       Alert.alert('Sucesso', 'Estudante deletado com sucesso!');
     } catch (error) {

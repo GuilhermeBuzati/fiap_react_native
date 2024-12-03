@@ -1,5 +1,6 @@
 import { saveTeacher } from '@/app/service/teacherService';
 import { TeacherSignUp } from '@/app/types/Teacher';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';

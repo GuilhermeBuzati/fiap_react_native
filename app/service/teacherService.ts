@@ -1,11 +1,11 @@
 import api from './api';
-import { SignInProps } from '../types/Login';
+import { LoginResponse, SignInProps } from '../types/Login';
 import Teacher, { TeacherSignUp } from '../types/Teacher';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-export const saveTeacher = async (teacher: TeacherSignUp): Promise<void> => {
+export const saveTeacher = async (teacher: TeacherSignUp): Promise<LoginResponse> => {
 
     try {
         const result = await api.post("/authors/signup", teacher);

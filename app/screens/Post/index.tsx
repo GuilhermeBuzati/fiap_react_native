@@ -73,6 +73,7 @@ export default function PostList({ navigation }: { navigation: NavigationProp<an
       await deletePost(postId);
   
       setFilteredPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+      setData((prevPosts) => prevPosts.filter((post) => post.id !== postId));
       
       Alert.alert('Sucesso', 'Postagem deletada com sucesso!');
     } catch (error) {

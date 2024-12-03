@@ -72,11 +72,6 @@ function TeacherStack() {
         component={CreateTeacher}
         options={{ title: 'Cadastrar Professor' }}
       />
-      <Stack.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{ title: 'Cadastre-se' }}
-      />
     </Stack.Navigator>
   );
 }
@@ -172,14 +167,21 @@ export default function App() {
       )}
 
       {!isAuthenticated && (
-        <Tab.Screen
+        <><Tab.Screen
           name="LoginProfessor"
           component={Login}
           options={{
             title: 'Login',
             tabBarIcon: ({ color }) => <Ionicons name="log-in" size={24} color={color} />,
-          }}
-        />
+          }} /><Tab.Screen
+            name="SignUp"
+            component={SignUp}
+            options={{
+              title: 'Cadastrar-se',
+              tabBarIcon: ({ color }) => <Ionicons name="person-add" size={24} color={color} />,
+            }} /></>
+      
+    
       )}
     </Tab.Navigator>
   );

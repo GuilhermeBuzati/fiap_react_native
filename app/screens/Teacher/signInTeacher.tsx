@@ -59,7 +59,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<any> 
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('TeacherStack', { screen: 'SignUp' })} 
+        onPress={() => navigation.navigate('SignUp')}
         style={styles.registerButton}
       >
         <Text style={styles.registerText}>Não tem uma conta? Cadastre-se</Text>

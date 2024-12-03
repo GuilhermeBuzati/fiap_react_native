@@ -1,5 +1,6 @@
 import { saveTeacher } from '@/app/service/teacherService';
 import { TeacherSignUp } from '@/app/types/Teacher';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
@@ -38,7 +39,15 @@ export default function SignUp({ navigation }: { navigation: NavigationProp<any>
     const signUpInfo: TeacherSignUp = { email, password, username };
 
     try {
-      await saveTeacher(signUpInfo);
+      const response = await saveTeacher(signUpInfo);
+
+      console.log(response);
+      if (response) {
+        const token = response.token;
+
+        await AsyncStorage.setItem('@auth_token', token);
+    }
+    
       Alert.alert('Sucesso', 'Professor cadastrado com sucesso!');
       setUsername('');
       setEmail('');
