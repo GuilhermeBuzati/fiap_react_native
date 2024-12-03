@@ -1,37 +1,40 @@
 import React, { useState } from 'react';
-import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import { View, FlatList, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import useAuth from '@/app/hooks/useAuthenticated';
+import { deleteTeacher, fetchTeachers } from '@/app/service/teacherService';
+import Teacher from '@/app/types/Teacher';
+import { deleteStudent } from '@/app/service/studentService';
 
-const teachersData = [
-  { id: 1, name: 'Professor 1', email: 'prof1@email.com', subject: 'Matemática' },
-  { id: 2, name: 'Professor 2', email: 'prof2@email.com', subject: 'Português' },
-  { id: 3, name: 'Professor 3', email: 'prof3@email.com', subject: 'Ciências' },
-  { id: 4, name: 'Professor 4', email: 'prof4@email.com', subject: 'História' },
-  { id: 5, name: 'Professor 5', email: 'prof5@email.com', subject: 'Geografia' },
-  { id: 6, name: 'Professor 6', email: 'prof6@email.com', subject: 'Física' },
-  { id: 7, name: 'Professor 7', email: 'prof7@email.com', subject: 'Química' },
-  { id: 8, name: 'Professor 8', email: 'prof8@email.com', subject: 'Biologia' },
-  { id: 9, name: 'Professor 9', email: 'prof9@email.com', subject: 'Inglês' },
-  { id: 10, name: 'Professor 10', email: 'prof10@email.com', subject: 'Educação Física' },
-];
 
 export default function TeacherList({ navigation }: { navigation: NavigationProp<any> }) {
-  const [data, setData] = useState(teachersData.slice(0, 5));
+  const [data, setData] = useState<Teacher[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredTeachers, setFilteredTeachers] = useState(data);
   const [loading, setLoading] = useState(false);
   const isAuthenticated = useAuth();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadPosts = async () => {
+        const data = await fetchTeachers(); 
+        setData(data);
+        setFilteredTeachers(data.slice(0, 10));
+      };
+  
+      loadPosts();
+    }, []) 
+  ); 
+
 
   const handleSearch = (text: string) => {
     setSearchTerm(text);
     if (text === '') {
       setFilteredTeachers(data);
     } else {
-      const filtered = teachersData.filter(teacher =>
-        teacher.name.toLowerCase().includes(text.toLowerCase()) ||
-        teacher.subject.toLowerCase().includes(text.toLowerCase()) ||
+      const filtered = data.filter(teacher =>
+        teacher.username.toLowerCase().includes(text.toLowerCase()) ||
         teacher.email.toLowerCase().includes(text.toLowerCase())
       );
       setFilteredTeachers(filtered);
@@ -42,7 +45,7 @@ export default function TeacherList({ navigation }: { navigation: NavigationProp
     if (loading || searchTerm !== '') return;
 
     setLoading(true);
-    const nextData = teachersData.slice(data.length, data.length + 3);
+    const nextData = data.slice(data.length, data.length + 3);
     if (nextData.length === 0) {
       setLoading(false);
       return;
@@ -59,20 +62,35 @@ export default function TeacherList({ navigation }: { navigation: NavigationProp
     navigation.navigate('EditTeacher', { teacher });
   };
 
+  const handleDelete = async (teacherId: string) => {
+    try {
+      await deleteTeacher(teacherId);
+  
+      setFilteredTeachers((prevTeachers) => prevTeachers.filter((teacher) => teacher.id !== teacherId));
+      
+      Alert.alert('Sucesso', 'Professor deletado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao deletar o professor:', error);
+      Alert.alert('Erro', 'Não foi possível deletar a professor.');
+    }
+  };
+
   const renderItem = ({ item }: { item: any }) => (
     <View style={styles.teacherItem}>
       <TouchableOpacity
         style={styles.teacherContent}
         onPress={() => navigation.navigate('TeacherDetails', { teacher: item })}
       >
-        <Text style={styles.teacherName}>{item.name}</Text>
-        <Text style={styles.teacherSubject}>Matéria: {item.subject}</Text>
-        <Text style={styles.teacherEmail}>Email: {item.email}</Text>
+        <Text style={styles.teacherName}>{item.username}</Text>
+        <Text style={styles.teacherEmail}>{item.email}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => handleEdit(item)} style={styles.editButton}>
         <Ionicons name="create-outline" size={24} color="blue" />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.iconButton}>
+      <Ionicons name="trash-outline" size={24} color="red" />
+    </TouchableOpacity>
     </View>
   );
 
@@ -168,4 +186,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  iconButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+    borderRadius: 50,
+    marginLeft: 10,
+  }
 });

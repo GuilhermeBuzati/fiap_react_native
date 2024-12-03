@@ -13,10 +13,10 @@ export const saveStudent = async (student: Partial<Student>): Promise<void> => {
     }
 };
 
-export const editStudent = async (post: Student): Promise<Student> => {
+export const editStudent = async (student: Student): Promise<Student> => {
 
     try {
-        const result = await api.put(`/students/${post.id}`, post);
+        const result = await api.put(`/students/${student.id}`, student);
 
         return result.data;
 

@@ -1,6 +1,6 @@
 import api from './api';
 import { SignInProps } from '../types/Login';
-import { TeacherSignUp } from '../types/Teacher';
+import Teacher, { TeacherSignUp } from '../types/Teacher';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -17,6 +17,43 @@ export const saveTeacher = async (teacher: TeacherSignUp): Promise<void> => {
     }
 };
 
+export const fetchTeachers = async (): Promise<Teacher[]> => {
+
+    try {
+        const result = await api.get("/authors/");
+
+        return result.data;
+    } catch (err) {
+        console.log(err);
+        throw new Error("Erro ao buscar os professores");
+    }
+};
+
+export const editTeacher = async (teacher: Teacher): Promise<Teacher> => {
+
+    try {
+        const result = await api.put(`/authors/${teacher.id}`, teacher);
+
+        return result.data;
+
+    } catch (err) {
+        console.log(err);
+        throw new Error("Erro ao editar o professor por id");
+    }
+};
+
+export const deleteTeacher = async (teacherId: String): Promise<Teacher> => {
+
+    try {
+        const result = await api.delete(`/authors/${teacherId}`);
+
+        return result.data;
+
+    } catch (err) {
+        console.log(err);
+        throw new Error("Erro ao deletar o professor por id");
+    }
+};
 
 export const signIn = async (signInProps: SignInProps): Promise<void> => {
 

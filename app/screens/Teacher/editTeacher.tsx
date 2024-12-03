@@ -1,3 +1,4 @@
+import { editTeacher } from '@/app/service/teacherService';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
@@ -5,27 +6,28 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 export default function EditTeacher({ route, navigation }: { route: any, navigation: NavigationProp<any> }) {
   const { teacher } = route.params;
 
-  const [name, setName] = useState(teacher.name || '');
+  const [username, setName] = useState(teacher.username || '');
   const [email, setEmail] = useState(teacher.email || '');
-  const [subject, setSubject] = useState(teacher.subject || '');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!name || !email || !subject) {
+    if (!username || !email) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
     setLoading(true);
 
-    try {
-      Alert.alert('Sucesso', 'Dados do professor atualizados com sucesso!');
-      navigation.goBack();
-    } catch (error) {
-      Alert.alert('Erro', 'Ocorreu um erro ao atualizar os dados do professor.');
-    } finally {
-      setLoading(false);
-    }
+    const updateTeacher = { ...teacher, username, email};
+    
+    await editTeacher(updateTeacher);
+
+    Alert.alert('Sucesso', 'Professor atualizado com sucesso!');
+    
+    setLoading(false);
+
+    navigation.navigate('TeacherStack', { screen: 'TeacherList'});
+
   };
 
   return (
@@ -35,7 +37,7 @@ export default function EditTeacher({ route, navigation }: { route: any, navigat
       <TextInput
         style={styles.input}
         placeholder="Nome do professor"
-        value={name}
+        value={username}
         onChangeText={setName}
       />
       <TextInput
@@ -45,12 +47,6 @@ export default function EditTeacher({ route, navigation }: { route: any, navigat
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Matéria"
-        value={subject}
-        onChangeText={setSubject}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
