@@ -80,7 +80,7 @@ export default function TeacherList({ navigation }: { navigation: NavigationProp
     <View style={styles.teacherItem}>
       <TouchableOpacity
         style={styles.teacherContent}
-        onPress={() => navigation.navigate('TeacherDetails', { teacher: item })}
+        onPress={() => void 0}
       >
         <Text style={styles.teacherName}>{item.username}</Text>
         <Text style={styles.teacherEmail}>{item.email}</Text>

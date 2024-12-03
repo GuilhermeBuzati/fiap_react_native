@@ -60,7 +60,7 @@ export default function StudentList({ route, navigation }: { route: any, navigat
     <View style={styles.studentItem}>
       <TouchableOpacity
         style={styles.studentContent}
-        onPress={() => navigation.navigate('StudentDetails', { student: item })}
+        onPress={() => void 0}
       >
         <Text style={styles.studentName}>{item.username}</Text>
         <Text style={styles.studentEmail}>{item.email}</Text>
