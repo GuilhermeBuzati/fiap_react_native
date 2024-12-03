@@ -8,10 +8,11 @@ import EditPost from './screens/Post/editPost';
 import TeacherList from './screens/Teacher';
 import CreateTeacher from './screens/Teacher/createTeacher';
 import EditTeacher from './screens/Teacher/editTeacher';
-import Login from './screens/Login';
 import StudentList from './screens/Student';
 import CreateStudent from './screens/Student/createStudent';
 import EditStudent from './screens/Student/editStudent';
+import Login from './screens/Teacher/signInTeacher';
+import SignUp from './screens/Teacher/signUpTeacher';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -68,6 +69,12 @@ function TeacherStack() {
         name="CreateTeacher"
         component={CreateTeacher}
         options={{ title: 'Cadastrar Professor' }}
+      />
+
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{ title: 'Cadastre-se' }}
       />
     </Stack.Navigator>
   );

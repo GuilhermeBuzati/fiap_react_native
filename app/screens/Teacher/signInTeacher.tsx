@@ -1,4 +1,4 @@
-import { signIn, signUp } from '@/app/service/teacherService';
+import { signIn } from '@/app/service/teacherService';
 import { SignInProps } from '@/app/types/Login';
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
@@ -59,7 +59,7 @@ export default function Login({ navigation }: { navigation: NavigationProp<any> 
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('CreateTeacher')} // Altere "Register" para a tela de cadastro
+        onPress={() => navigation.navigate('TeacherStack', { screen: 'SignUp' })} 
         style={styles.registerButton}
       >
         <Text style={styles.registerText}>Não tem uma conta? Cadastre-se</Text>
